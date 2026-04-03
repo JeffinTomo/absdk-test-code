@@ -19,37 +19,9 @@ try {
 const nextConfig: NextConfig = {
   output: "standalone",
   reactStrictMode: false,
-
-  // 接入ab-org新加的
-  transpilePackages: [
-    "@ab-org/predicate-market-sdk",
-    "@ab-org/sdk-core",
-    "@tomo-inc/cubist-sig-sdk",
-  ],
-
   // next.config.ts
   webpack: (config, { isServer }) => {
     config.externals.push("pino-pretty", "lokijs", "encoding");
-    // 接入ab-org新加的
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-        net: false,
-        tls: false,
-        crypto: false,
-        stream: false,
-        os: false,
-      };
-    }
-    // 接入ab-org新加的
-    config.module.rules.push({
-      test: /node_modules\/@ab-org\/predicate-market-sdk\/.*\.js$/,
-      parser: {
-        amd: false,
-      },
-    });
-
     return config;
   },
 };
